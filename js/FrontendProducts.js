@@ -196,7 +196,8 @@ class BulkpurchaseProductTable {
             let qtyMsk = parseInt($row.find('.js-product-qty-msk input').val()) || 0;
             let qtyFr = parseInt($row.find('.js-product-qty-fr input').val()) || 0;
             let price = parseFloat($row.find('.js-product-price').data('price'));
-            let overflow = $row.data('overflow') || 0;
+            let overflow = $row.data('overflow');
+            let overflowed = 0;
             if (qtyMsk > 0) {
                 orderItemsMsk.push({
                     product_id: productId,
@@ -207,21 +208,31 @@ class BulkpurchaseProductTable {
                     type: 'product'
                 });
             }
-            
+            //overflow является количеством товара из франции которое есть
+            //qtyFr это количество выбранное пользователем
+            //overflowed это количество товара которое вышло за пределы наличия
+            //получается, что в случае наличия товара и выхода за его пределы будут вызываться оба массива
             if (qtyFr > 0) {
                 console.log(productId);
                 console.log(overflow);
                 console.log(price);
-                if (overflow == 1) {
+                if (qtyFr < overflow) {
+                    overflowed = 0;
+                } else {
+                    overflowed = qtyFr - overflow;
+                    qtyFr = overflow;
+                }
+                if (overflowed > 0) {
                     orderItemsFrOverflowed.push({
                         product_id: productId,
                         sku_id: skuId,
                         name: name,
-                        quantity: qtyFr,
+                        quantity: overflowed,
                         price: price,
                         type: 'product'
                     });
-                } else {
+                }
+                if (qtyFr > 0) {
                     orderItemsFr.push({
                         product_id: productId,
                         sku_id: skuId,

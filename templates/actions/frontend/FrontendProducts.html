@@ -142,7 +142,7 @@
                                         {$stockMsc = $product['skus'][$productFirstSkus]['stock'][1]}
                                         {$stockFr = $product['skus'][$productFirstSkus]['stock'][2]}
                                         {if $product['price'] > 0} <!-- Проверка цены -->
-                                            <tr class="js-export js-export-total" {if $stockFr == 0}data-overflow="1"{/if} data-product-id="{$product.id}" data-feat-weight="{$product['features']['weight']}" data-feat-obem="{$product['features']['obem']}" data-product-sku="{$productFirstSkus}">
+                                            <tr class="js-export js-export-total" data-overflow="{$stockFr}" data-product-id="{$product.id}" data-feat-weight="{$product['features']['weight']}" data-feat-obem="{$product['features']['obem']}" data-product-sku="{$productFirstSkus}">
                                                 <td class="js-product-art" data-sku-id="{$productFirstSkus}" data-sku-name="{$productFirstSkusArray['sku']}">{$productFirstSkusArray['sku']}</td> <!-- Изменение здесь -->
                                                 <td class="js-product-name">
                                                     {$product.name}
@@ -158,7 +158,7 @@
                                                 <td class="js-product-qty-msk"><input type="number" name="moscow_order_qty[{$product.id}]" min="0" {if $stockMsc != NULL}max="{$stockMsc}"{/if} value="0"></td>
                                                 <td class="js-product-total-msk">—</td>
                                                 <td class="js-product-stock-fr" data-stock-fr="{$stockFr}">{if $stockFr == NULL}Много{else}{$stockFr}{/if}</td>
-                                                <td class="js-product-qty-fr"><input type="number" name="france_order_qty[{$product.id}]" min="0" {if $stockFr != NULL}max="{if $stockFr == 0}999{else}{$stockFr}{/if}"{/if} value="0"></td>
+                                                <td class="js-product-qty-fr"><input type="number" name="france_order_qty[{$product.id}]" min="0" {if $stockFr != NULL}max="999{*{$stockFr}*}"{/if} value="0"></td>
                                                 <td class="js-product-total-fr">—</td>
                                             </tr>
                                         {/if}
