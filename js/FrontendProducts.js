@@ -682,3 +682,34 @@ $(document).ready(function () {
         }
     });
 });
+$(document).on('ready', function() {
+    $('#clear-all-products').on('click', function(){
+        $('.bulkpurchase-products-table').append('<div id="clear-products-modal" class="bulkpurchase-modal"><div class="bulkpurchase-modal-content" style="width: 45%">' +
+        '<span class="bulkpurchase-close-modal">×</span><h2>Вы точно хотите обнулить все заказанные товары?</h2>' + 
+        '<div style="display: flex;justify-content: space-evenly"><button id="close-clear-modal" class="bulkpurchase-order-button">Отмена</button><button id="append-clear" class="bulkpurchase-order-button">Да</button></div>' +
+        '</div></div>'); 
+        $(document).on('click', '#clear-products-modal .bulkpurchase-close-modal', function(){
+            $(this).parent().parent().remove();
+        });
+        $(document).on('click', '#clear-products-modal #close-clear-modal', function(){
+            $(this).parent().parent().parent().remove();
+        });
+        $(document).on('click', '#clear-products-modal #append-clear', function(){
+            $('.js-product-qty-msk input, .js-product-qty-fr input').val(0);
+            $('.js-product-qty-msk input, .js-product-qty-fr input').last().trigger('input');
+            $('.js-product-total-fr').each(function () {
+                $(this).html('—');
+            });
+            $('.js-product-total-msk').each(function () {
+                $(this).html('—');
+            });
+            $('.active-msk-row').removeClass('active-msk-row');
+            $('.active-fr-column').removeClass('active-fr-column');
+            $('.bulkpurchase-products-table').append('<div id="bulk-popup-cleared">Заказ обнулен</div>');
+            $(this).parent().parent().parent().remove();
+            setTimeout(function(){
+                $('#bulk-popup-cleared').remove();
+            }, 2000);
+        });
+    });
+})
